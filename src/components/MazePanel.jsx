@@ -43,7 +43,9 @@ const MazePanel = ({ grid, visited, current, path, parentMap, playbackNode }) =>
                             className={`w-8 h-8 flex items-center justify-center transition-all duration-300 ${getCellColor(r, c, cell)}`}
                         >
                             {current && current.r === r && current.c === c && cell !== 2 && cell !== 3 && (
-                                <span className="text-xl filter drop-shadow-sm">🧭</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6 text-amber-800 drop-shadow-md animate-pulse">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m9-9H3m9-9a9 9 0 110 18 9 9 0 010-18z" />
+                                </svg>
                             )}
                             <span className="text-[10px] text-gray-500 opacity-0 hover:opacity-100 cursor-default absolute">
                                 {r},{c}
