@@ -74,7 +74,16 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
         const maxDepth = Math.max(...Array.from(levels.keys()));
         const neededHeight = Math.max(500, (maxDepth + 1) * 80 + 50);
 
-        return { nodes: Array.from(nodes.values()), links, levels, width: neededWidth, height: neededHeight, nodeMap: nodes };
+        return {
+            nodes: Array.from(nodes.values()),
+            links,
+            levels,
+            width: neededWidth,
+            height: neededHeight,
+            nodeMap: nodes,
+            maxDepth,
+            maxBreadth: maxNodesInLevel
+        };
     }, [treeEdges, startNode]);
 
     // View Update Logic (Vertical Only)
@@ -114,55 +123,71 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
     const isPathNode = (node) => path.some(p => p.r === node.r && p.c === node.c);
     const isCurrentNode = (node) => current && current.r === node.r && current.c === node.c;
 
-    return (
-        // Flex row + justify-center handles Horizontal Centering automatically!
-        <div ref={containerRef} className="flex justify-center w-full h-full overflow-hidden bg-gray-800 rounded-lg p-0 relative">
-            {/* Minimal Overlay Title */}
-            <h2 className="absolute top-4 left-0 w-full text-center text-gray-500/50 text-xs font-bold z-10 pointer-events-none uppercase tracking-[0.2em]">
-                BFS Tree Live
-            </h2>
+    // If we have no tree, just show placeholder
+    if (layout.nodes.length === 0) {
+        return <div className="w-full h-full flex items-center justify-center text-gray-500">Wait for start...</div>;
+    }
 
+    // Dynamic Height based on depth
+    // We want it to be scrollable if it gets tall
+    const LEVEL_HEIGHT = 80;
+    const NODE_WIDTH = 60;
+    const canvasHeight = Math.max(800, (layout.maxDepth + 2) * LEVEL_HEIGHT);
+    const canvasWidth = Math.max(1200, (layout.maxBreadth + 2) * NODE_WIDTH);
+
+    return (
+        <div ref={containerRef} className="w-full h-full overflow-visible flex justify-center p-0 relative">
             <div
                 className="will-change-transform"
                 style={{
-                    width: layout.width,
-                    height: layout.height,
+                    // width: layout.width, // Removed as SVG will define its own width
+                    // height: layout.height, // Removed as SVG will define its own height
                     // Use CSS alignment for X, Transform for Y and Scale
                     transformOrigin: 'top center',
                     transform: `translate3d(0, ${panY}px, 0) scale(${zoom})`,
                     transition: 'transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1)'
                 }}
             >
-                <svg width={layout.width} height={layout.height}>
-                    {/* Links */}
-                    {layout.links.map(link => (
-                        <line
-                            key={link.id}
-                            x1={link.x1} y1={link.y1}
-                            x2={link.x2} y2={link.y2}
-                            stroke="#4B5563"
-                            strokeWidth="1.5"
-                        />
-                    ))}
-
-                    {/* Nodes */}
-                    {layout.nodes.map(node => (
-                        <g key={node.id}>
-                            <circle
-                                cx={node.x} cy={node.y} r="14"
-                                fill={isCurrentNode(node) ? '#FBBF24' : (isPathNode(node) ? '#3B82F6' : '#E5E7EB')}
-                                stroke={isPathNode(node) ? 'white' : '#9CA3AF'}
-                                strokeWidth={isPathNode(node) ? 2 : 1}
+                <svg
+                    width={canvasWidth}
+                    height={canvasHeight}
+                    className="block"
+                    style={{ minWidth: '100%', minHeight: '100%' }}
+                >
+                    <defs>
+                        {/* ... markers ... */}
+                    </defs>
+                    <g transform={`translate(${canvasWidth / 2 - layout.width / 2}, 40)`}>
+                        {/* Links */}
+                        {layout.links.map(link => (
+                            <line
+                                key={link.id}
+                                x1={link.x1} y1={link.y1}
+                                x2={link.x2} y2={link.y2}
+                                stroke="#4B5563"
+                                strokeWidth="1.5"
                             />
-                            <text
-                                x={node.x} y={node.y}
-                                dy=".3em" textAnchor="middle"
-                                fill="black" fontSize="9" fontWeight="bold"
-                            >
-                                {node.r},{node.c}
-                            </text>
-                        </g>
-                    ))}
+                        ))}
+
+                        {/* Nodes */}
+                        {layout.nodes.map(node => (
+                            <g key={node.id}>
+                                <circle
+                                    cx={node.x} cy={node.y} r="14"
+                                    fill={isCurrentNode(node) ? '#FBBF24' : (isPathNode(node) ? '#3B82F6' : '#E5E7EB')}
+                                    stroke={isPathNode(node) ? 'white' : '#9CA3AF'}
+                                    strokeWidth={isPathNode(node) ? 2 : 1}
+                                />
+                                <text
+                                    x={node.x} y={node.y}
+                                    dy=".3em" textAnchor="middle"
+                                    fill="black" fontSize="9" fontWeight="bold"
+                                >
+                                    {node.r},{node.c}
+                                </text>
+                            </g>
+                        ))}
+                    </g>
                 </svg>
             </div>
         </div>

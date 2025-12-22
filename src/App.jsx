@@ -121,62 +121,66 @@ function App() {
 
 
 
+  const [zoom, setZoom] = useState(1);
+
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-white p-4 font-sans overflow-hidden">
-      {/* Header */}
-      <header className="flex justify-between items-center mb-4 p-4 bg-gray-800 rounded-lg shadow-md">
-        <div>
-          <h1 className="text-2xl font-bold text-blue-400">BFS Visualizer</h1>
-          <p className="text-sm text-gray-400">Step-by-step exploration & Tree generation</p>
-        </div>
-        <div className="flex gap-2">
-          <div className="px-4 py-2 bg-gray-700 rounded text-center min-w-[200px] border border-gray-600 flex items-center justify-center">
-            <span className="text-yellow-400 font-mono text-sm">{feedbackText}</span>
+    <div className="flex h-screen bg-orange-50 text-stone-700 font-sans overflow-hidden selection:bg-orange-200">
+
+      {/* Left Sidebar: Minimalist & Unified */}
+      <aside className="w-[40%] flex flex-col z-10 relative">
+
+
+        {/* 1. Header / Controls - Aligned with TREE label */}
+        <div className="px-8 pt-14 pb-4 flex flex-col gap-6 z-20">
+          <div className="flex flex-wrap gap-3">
+            {phase === 'IDLE' && (
+              <button onClick={handleStart} className="px-6 py-2 bg-stone-200 text-stone-800 hover:bg-stone-200 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
+                Start
+              </button>
+            )}
+            {phase === 'SEARCHING' && (
+              <button onClick={() => setPhase('IDLE')} className="px-6 py-2 bg-stone-200 text-stone-800 hover:bg-stone-200 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-orange-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
+                Pause
+              </button>
+            )}
+            {phase === 'FINISHED' && engineState.found && (
+              <button onClick={handleStart} className="px-6 py-2 bg-orange-400 text-white hover:bg-orange-500 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-orange-600 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
+                Replay
+              </button>
+            )}
+
+            <button onClick={handleStep} disabled={phase === 'FINISHED' || phase === 'PLAYBACK'} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl disabled:opacity-50 uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1">
+              Step
+            </button>
+            <button onClick={handleReset} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1">
+              Reset
+            </button>
+            <button onClick={handleNewMaze} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1" title="New Maze">
+              🎲
+            </button>
+            <button onClick={() => setShowStats(true)} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1" title="View Stats">
+              📊
+            </button>
+            <button onClick={() => setShowGuide(true)} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1" title="Why BFS?">
+              ❓
+            </button>
           </div>
-          {phase === 'IDLE' && (
-            <button onClick={handleStart} className="px-6 py-2 bg-green-600 hover:bg-green-700 rounded font-bold shadow-lg transition-colors">
-              Start Search
-            </button>
-          )}
-          {phase === 'SEARCHING' && (
-            <button onClick={() => setPhase('IDLE')} className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 rounded font-bold transition-colors">
-              Pause
-            </button>
-          )}
-          {phase === 'FINISHED' && engineState.found && (
-            <button onClick={handleStart} className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded font-bold transition-colors">
-              Play Path
-            </button>
-          )}
-          <button onClick={handleStep} disabled={phase === 'FINISHED' || phase === 'PLAYBACK'} className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded disabled:opacity-50">
-            Step
-          </button>
-          <button onClick={handleReset} className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded">
-            Reset
-          </button>
-          <button onClick={handleNewMaze} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded shadow-md border border-purple-500">
-            🎲 New Maze
-          </button>
 
-          <button
-            onClick={() => setShowStats(true)}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-500 rounded text-gray-200 flex items-center gap-2"
-            title="View Search Statistics"
-          >
-            📊 Run Stats
-          </button>
+          <div className="text-left ml-1">
+            <span className={`text-xs font-black tracking-widest uppercase ${phase === 'SEARCHING' ? 'animate-pulse text-orange-600' : 'text-stone-400'}`}>
+              {feedbackText}
+            </span>
+          </div>
         </div>
-      </header>
 
-      <BFSGuideModal isOpen={showGuide} onClose={() => setShowGuide(false)} />
-      <SearchStatsModal isOpen={showStats} onClose={() => setShowStats(false)} state={engineState} />
+        {/* 2. Maze Centerpiece */}
+        <div className="flex-1 px-8 flex flex-col items-center justify-center relative gap-8">
 
-      {/* Main Layout */}
-      <main className="flex flex-col flex-1 gap-4 overflow-hidden min-h-0">
-        {/* Main Panels section */}
-        <div className="flex flex-1 gap-6 overflow-hidden min-h-0">
-          {/* Left: Maze */}
-          <section className="flex-1 bg-gray-800 rounded-lg p-4 shadow-inner flex flex-col items-center justify-center relative border border-gray-700">
+
+
+          <div className="relative p-1">
+            {/* Subtle Glow behind maze - Warm glow */}
+            <div className="absolute inset-0 bg-orange-300/20 blur-3xl rounded-full"></div>
             <MazePanel
               grid={engineState.grid}
               visited={engineState.visited}
@@ -185,38 +189,68 @@ function App() {
               parentMap={engineState.parentMap}
               playbackNode={playbackNode}
             />
-          </section>
+          </div>
+        </div>
 
-          {/* Right: Tree */}
-          <section className="flex-1 bg-gray-800 rounded-lg shadow-inner overflow-hidden flex flex-col border border-gray-700 relative">
-            <div className="flex-1 overflow-hidden relative">
-              <TreePanel
-                treeEdges={engineState.treeEdges}
-                current={engineState.current}
-                path={engineState.finished ? engineState.shortestPath : []}
-                startNode={engineRef.current.start}
-                finished={engineState.finished}
-              />
+
+        {/* 3. Bottom: Queue - Seamless */}
+        <div className="px-8 pb-8 pt-4 flex flex-col gap-4 h-48 shrink-0">
+          {/* Queue Panel - Minimal */}
+          <div className="flex-1 flex flex-col">
+            <div className="flex-1 relative overflow-hidden">
+              <QueuePanel queue={engineState.queue} current={engineState.current} />
             </div>
-          </section>
+          </div>
         </div>
 
-        {/* Bottom: Queue Layout */}
-        <div className="flex-shrink-0">
-          <QueuePanel queue={engineState.queue} current={engineState.current} />
-        </div>
-      </main>
+      </aside >
 
-      {/* Footer / Guide Button */}
-      <footer className="mt-2 flex justify-center">
-        <button
-          onClick={() => setShowGuide(true)}
-          className="w-full py-3 bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded border border-gray-600 text-gray-300 font-bold tracking-widest uppercase text-sm shadow-lg transition-all"
-        >
-          📖 Why BFS? (Click to Learn Logic)
-        </button>
-      </footer>
-    </div>
+      {/* Right Main Interface: BFS Tree - Boundless */}
+      < main className="flex-1 relative flex flex-col overflow-hidden bg-orange-50" >
+        {/* Subtle grid pattern for the tree background - Dots */}
+        < div className="absolute inset-0 opacity-[0.05]"
+          style={{ backgroundImage: 'radial-gradient(circle, #78716c 1px, transparent 1px)', backgroundSize: '40px 40px' }
+          }>
+        </div >
+
+        {/* Tree Header / Controls */}
+        < div className="absolute top-8 left-8 z-10 pointer-events-none" >
+          <h2 className="text-[#ff800f] text-6xl font-black tracking-tight select-none drop-shadow-[2px_2px_0px_rgba(87,83,78,1)]">TREE</h2>
+        </div >
+
+        {/* Minimal Zoom Controls - Light Mode */}
+        < div className="absolute bottom-8 right-8 z-20 flex gap-2" >
+          <div className="flex bg-white shadow-[4px_4px_0px_0px_rgba(214,211,209,0.5)] rounded-full p-1 border-2 border-stone-100">
+            <button onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 rounded-full transition-colors font-bold">-</button>
+            <button onClick={() => setZoom(1)} className="px-2 text-xs font-black text-stone-300 hover:text-stone-800 transition-colors">{Math.round(zoom * 100)}%</button>
+            <button onClick={() => setZoom(z => Math.min(3, z + 0.1))} className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 rounded-full transition-colors font-bold">+</button>
+          </div>
+        </div >
+
+        {/* Tree Container */}
+        < div className="flex-1 overflow-auto relative z-0 no-scrollbar" >
+          <div
+            className="min-w-full min-h-full origin-top-left transition-transform duration-200 ease-out"
+            style={{
+              transform: `scale(${zoom})`,
+              width: `${100 / zoom}%`,
+            }}
+          >
+            <TreePanel
+              treeEdges={engineState.treeEdges}
+              current={engineState.current}
+              path={engineState.finished ? engineState.shortestPath : []}
+              startNode={engineRef.current.start}
+              finished={engineState.finished}
+            />
+          </div>
+        </div >
+      </main >
+
+      <BFSGuideModal isOpen={showGuide} onClose={() => setShowGuide(false)} />
+      <SearchStatsModal isOpen={showStats} onClose={() => setShowStats(false)} state={engineState} />
+
+    </div >
   )
 }
 

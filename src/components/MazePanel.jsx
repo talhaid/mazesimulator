@@ -4,51 +4,55 @@ const MazePanel = ({ grid, visited, current, path, parentMap, playbackNode }) =>
     // Grid colors
     const getCellColor = (r, c, value) => {
         // 0: free, 1: wall, 2: start, 3: target
-        if (value === 1) return 'bg-black';
-        if (value === 2) return 'bg-green-500';
-        if (value === 3) return 'bg-red-500';
+        if (value === 1) return 'bg-stone-800 shadow-sm rounded-sm scale-95'; // Dark Block Obstacle
+        if (value === 2) return 'bg-amber-500 rounded-md shadow-sm scale-90'; // Sentinel Node (Dark Yellow)
+        if (value === 3) return 'bg-rose-400 rounded-md shadow-sm scale-90'; // Target Node
 
         // Playback Character
         if (playbackNode && playbackNode.r === r && playbackNode.c === c) {
-            return 'bg-purple-600 border-4 border-white shadow-xl scale-110 z-20 rounded-full';
+            return 'bg-amber-500 border-4 border-white shadow-xl z-20 rounded-full scale-110';
         }
 
         // Visualization Overlays
         // Path (final)
         const isPath = path.some(p => p.r === r && p.c === c);
-        if (isPath && value !== 2 && value !== 3) return 'bg-blue-500 scale-90 rounded-sm';
+        if (isPath && value !== 2 && value !== 3) return 'bg-orange-400 rounded-sm shadow-inner';
 
         // Current Node (Processing BFS)
-        if (current && current.r === r && current.c === c && value !== 2 && value !== 3) return 'bg-yellow-400 scale-110 shadow-lg z-10';
+        if (current && current.r === r && current.c === c && value !== 2 && value !== 3) return 'bg-transparent z-10 scale-125';
 
         // Visited
-        if (visited[r][c] && value !== 2 && value !== 3) return 'bg-blue-200';
+        if (visited[r][c] && value !== 2 && value !== 3) return 'bg-amber-200'; // Visited floor (Light Amber trail)
 
-        return 'bg-white border-gray-200';
+        return 'bg-stone-100'; // Default Floor
     };
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-full">
             <div
-                className="grid gap-1 bg-gray-700 p-2 rounded-lg shadow-2xl border border-gray-600"
+                className="grid p-4 rounded-2xl bg-stone-300 border-b-8 border-r-8 border-stone-400 shadow-xl"
                 style={{
-                    gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`
+                    gridTemplateColumns: `repeat(${grid[0].length}, 32px)`,
+                    gap: '2px' // Explicit gap to separate tiles
                 }}
             >
                 {grid.map((row, r) => (
                     row.map((cell, c) => (
                         <div
                             key={`${r}-${c}`}
-                            className={`w-8 h-8 flex items-center justify-center transition-all duration-300 border ${getCellColor(r, c, cell)}`}
+                            className={`w-8 h-8 flex items-center justify-center transition-all duration-300 ${getCellColor(r, c, cell)}`}
                         >
-                            <span className="text-[10px] text-gray-500 opacity-0 hover:opacity-100 cursor-default">
+                            {current && current.r === r && current.c === c && cell !== 2 && cell !== 3 && (
+                                <span className="text-xl filter drop-shadow-sm">🧭</span>
+                            )}
+                            <span className="text-[10px] text-gray-500 opacity-0 hover:opacity-100 cursor-default absolute">
                                 {r},{c}
                             </span>
                         </div>
                     ))
                 ))}
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -8,32 +8,28 @@ const QueuePanel = ({ queue, current }) => {
     // Let's just keep it simple.
 
     return (
-        <div className="w-full bg-gray-800 rounded-lg p-3 border border-gray-700 flex flex-col shadow-inner h-24">
-            <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    FIFO Queue <span className="text-gray-600 ml-2">Head ➞ Tail</span>
-                </h3>
-                <span className="text-xs text-gray-500">{queue.length} items</span>
-            </div>
-
+        <div className="w-full h-full flex flex-col">
+            <h3 className="text-xs font-black text-stone-400 uppercase tracking-widest mb-2">
+                FIFO Queue
+            </h3>
             <div ref={scrollRef} className="flex-1 flex gap-2 overflow-x-auto overflow-y-hidden items-center px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
                 {/* Current (Processing) Node - Visualized as just popped */}
                 {current && (
                     <div className="flex-shrink-0 flex flex-col items-center opacity-50 grayscale">
-                        <div className="w-8 h-8 rounded-full border-2 border-yellow-500 bg-yellow-900/50 flex items-center justify-center text-xs font-mono text-yellow-500 mb-1">
+                        <div className="w-8 h-8 rounded-full border-2 border-yellow-500 bg-yellow-900/50 flex items-center justify-center text-xs font-bold tracking-tight text-yellow-500 mb-1">
                             {current.r},{current.c}
                         </div>
-                        <span className="text-[10px] text-gray-500 uppercase">Active</span>
+                        <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Active</span>
                     </div>
                 )}
 
                 {/* Separator */}
-                {current && queue.length > 0 && <div className="text-gray-600">➞</div>}
+                {current && queue.length > 0 && <div className="text-gray-400 font-bold">➞</div>}
 
                 {/* Queue Items */}
                 {queue.slice(0, 50).map((node, i) => ( // limit rendering for perf
                     <div key={`${node.r}-${node.c}`} className="flex-shrink-0 flex flex-col items-center animate-fade-in-right">
-                        <div className="w-8 h-8 rounded-full border border-blue-500/50 bg-gray-700 flex items-center justify-center text-xs font-mono text-blue-300">
+                        <div className="w-8 h-8 rounded-full border border-blue-500/50 bg-white flex items-center justify-center text-xs font-bold tracking-tight text-blue-500 shadow-sm">
                             {node.r},{node.c}
                         </div>
                     </div>
