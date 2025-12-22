@@ -3,6 +3,7 @@ import { BFSEngine } from './logic/BFSEngine';
 import { generateRandomMaze } from './logic/MazeGenerator';
 import MazePanel from './components/MazePanel';
 import TreePanel from './components/TreePanel';
+import ExplanationModal from './components/ExplanationModal';
 
 // simple 10x10 maze
 // 0: free, 1: wall, 2: start, 3: target
@@ -24,6 +25,7 @@ function App() {
   const [engineState, setEngineState] = useState(engineRef.current.getState());
   const [phase, setPhase] = useState('IDLE'); // IDLE, SEARCHING, FINISHED, PLAYBACK
   const [playbackIndex, setPlaybackIndex] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   // Timer for auto-playing BFS or Playback
   useEffect(() => {
@@ -169,8 +171,18 @@ function App() {
           <button onClick={handleNewMaze} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded shadow-md border border-purple-500">
             🎲 New Maze
           </button>
+          {/* Explain Button - Always visible or only when relevant? User said "after reached goal" mostly, but useful anytime. Let's make it always accessible but highlighted if finished. */}
+          <button
+            onClick={() => setShowExplanation(true)}
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-500 rounded text-gray-200"
+            title="How BFS Works"
+          >
+            ❓ Explain Logic
+          </button>
         </div>
       </header>
+
+      <ExplanationModal isOpen={showExplanation} onClose={() => setShowExplanation(false)} />
 
       {/* Main Layout */}
       <main className="flex flex-1 gap-6 overflow-hidden">
