@@ -15,7 +15,7 @@ const MazePanel = ({ grid, visited, current, path, parentMap, playbackNode, dept
         // 0: free, 1: wall, 2: start, 3: target
         if (value === 1) return { className: 'bg-stone-800 shadow-sm rounded-sm scale-95', style: {} }; // Dark Block Obstacle
         if (value === 2) return { className: 'bg-amber-500 rounded-md shadow-sm scale-90', style: {} }; // Sentinel Node (Dark Yellow)
-        if (value === 3) return { className: 'bg-rose-400 rounded-md shadow-sm scale-90', style: {} }; // Target Node
+        if (value === 3) return { className: 'bg-rose-800 rounded-md shadow-sm scale-90', style: {} }; // Target Node
 
         // Playback Character
         if (playbackNode && playbackNode.r === r && playbackNode.c === c) {
