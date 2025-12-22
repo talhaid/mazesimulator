@@ -4,6 +4,7 @@ import { generateRandomMaze } from './logic/MazeGenerator';
 import MazePanel from './components/MazePanel';
 import TreePanel from './components/TreePanel';
 import ExplanationModal from './components/ExplanationModal';
+import QueuePanel from './components/QueuePanel';
 
 // simple 10x10 maze
 // 0: free, 1: wall, 2: start, 3: target
@@ -115,28 +116,10 @@ function App() {
     ? engineState.shortestPath[playbackIndex]
     : null;
 
-  // Debug Counts
-  const visitedCount = engineState.visited.flat().filter(Boolean).length;
-  // Node count = Start (1) + Edges (which represent children discoveries)
-  // Actually, let's just use startNode + treeEdges.length correctly?
-  // BFSEngine treeEdges tracks every discovery.
-  // Start node is not in treeEdges as a child. So treeNodes = 1 + treeEdges.length.
-  // Wait, if we reset, treeEdges is empty.
-  const treeCount = (engineRef.current.start ? 1 : 0) + engineState.treeEdges.length;
 
-  const isConsistent = visitedCount === treeCount;
 
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-white p-4 font-sans overflow-hidden">
-      {/* Debug Overlay */}
-      <div className={`fixed bottom-19 right-4 z-50 p-2 rounded shadow-lg border ${isConsistent ? 'bg-gray-800 border-green-500' : 'bg-red-900 border-red-500'}`}>
-        <h3 className="text-xs font-bold uppercase mb-1 text-gray-400">Correctness Check</h3>
-        <div className="flex gap-4 text-sm font-mono">
-          <span>Maze Visited: <strong className="text-white">{visitedCount}</strong></span>
-          <span>Tree Nodes: <strong className="text-white">{treeCount}</strong></span>
-        </div>
-        {!isConsistent && <div className="text-xs text-red-300 mt-1">MISMATCH ERROR!</div>}
-      </div>
       {/* Header */}
       <header className="flex justify-between items-center mb-4 p-4 bg-gray-800 rounded-lg shadow-md">
         <div>
@@ -185,31 +168,39 @@ function App() {
       <ExplanationModal isOpen={showExplanation} onClose={() => setShowExplanation(false)} />
 
       {/* Main Layout */}
-      <main className="flex flex-1 gap-6 overflow-hidden">
-        {/* Left: Maze */}
-        <section className="flex-1 bg-gray-800 rounded-lg p-4 shadow-inner flex flex-col items-center justify-center relative border border-gray-700">
-          <MazePanel
-            grid={engineState.grid}
-            visited={engineState.visited}
-            current={engineState.current}
-            path={engineState.finished ? engineState.shortestPath : []}
-            parentMap={engineState.parentMap}
-            playbackNode={playbackNode}
-          />
-        </section>
-
-        {/* Right: Tree */}
-        <section className="flex-1 bg-gray-800 rounded-lg shadow-inner overflow-hidden flex flex-col border border-gray-700 relative">
-          <div className="flex-1 overflow-hidden relative">
-            <TreePanel
-              treeEdges={engineState.treeEdges}
+      <main className="flex flex-col flex-1 gap-4 overflow-hidden min-h-0">
+        {/* Main Panels section */}
+        <div className="flex flex-1 gap-6 overflow-hidden min-h-0">
+          {/* Left: Maze */}
+          <section className="flex-1 bg-gray-800 rounded-lg p-4 shadow-inner flex flex-col items-center justify-center relative border border-gray-700">
+            <MazePanel
+              grid={engineState.grid}
+              visited={engineState.visited}
               current={engineState.current}
               path={engineState.finished ? engineState.shortestPath : []}
-              startNode={engineRef.current.start}
-              finished={engineState.finished}
+              parentMap={engineState.parentMap}
+              playbackNode={playbackNode}
             />
-          </div>
-        </section>
+          </section>
+
+          {/* Right: Tree */}
+          <section className="flex-1 bg-gray-800 rounded-lg shadow-inner overflow-hidden flex flex-col border border-gray-700 relative">
+            <div className="flex-1 overflow-hidden relative">
+              <TreePanel
+                treeEdges={engineState.treeEdges}
+                current={engineState.current}
+                path={engineState.finished ? engineState.shortestPath : []}
+                startNode={engineRef.current.start}
+                finished={engineState.finished}
+              />
+            </div>
+          </section>
+        </div>
+
+        {/* Bottom: Queue Layout */}
+        <div className="flex-shrink-0">
+          <QueuePanel queue={engineState.queue} current={engineState.current} />
+        </div>
       </main>
 
       {/* Brief Explanation */}
