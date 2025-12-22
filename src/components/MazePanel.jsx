@@ -28,10 +28,9 @@ const MazePanel = ({ grid, visited, current, path, parentMap, playbackNode }) =>
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <h2 className="text-xl font-bold mb-4 text-white">The Maze</h2>
+        <div className="flex flex-col items-center justify-center w-full h-full">
             <div
-                className="grid gap-1 bg-gray-700 p-2 rounded-lg"
+                className="grid gap-1 bg-gray-700 p-2 rounded-lg shadow-2xl border border-gray-600"
                 style={{
                     gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`
                 }}
@@ -48,13 +47,6 @@ const MazePanel = ({ grid, visited, current, path, parentMap, playbackNode }) =>
                         </div>
                     ))
                 ))}
-            </div>
-            <div className="mt-4 flex gap-4 text-sm text-gray-300">
-                <div className="flex items-center gap-2"><div className="w-4 h-4 bg-green-500"></div>Start</div>
-                <div className="flex items-center gap-2"><div className="w-4 h-4 bg-red-500"></div>Target</div>
-                <div className="flex items-center gap-2"><div className="w-4 h-4 bg-blue-200"></div>Visited</div>
-                <div className="flex items-center gap-2"><div className="w-4 h-4 bg-yellow-400"></div>Current (BFS)</div>
-                <div className="flex items-center gap-2"><div className="w-4 h-4 bg-purple-600 rounded-full border border-white"></div>Character</div>
             </div>
         </div>
     );

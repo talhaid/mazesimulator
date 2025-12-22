@@ -3,7 +3,9 @@ import { BFSEngine } from './logic/BFSEngine';
 import { generateRandomMaze } from './logic/MazeGenerator';
 import MazePanel from './components/MazePanel';
 import TreePanel from './components/TreePanel';
-import ExplanationModal from './components/ExplanationModal';
+// import ExplanationModal from './components/ExplanationModal'; // Deprecated
+import BFSGuideModal from './components/BFSGuideModal';
+import SearchStatsModal from './components/SearchStatsModal';
 import QueuePanel from './components/QueuePanel';
 
 // simple 10x10 maze
@@ -26,7 +28,8 @@ function App() {
   const [engineState, setEngineState] = useState(engineRef.current.getState());
   const [phase, setPhase] = useState('IDLE'); // IDLE, SEARCHING, FINISHED, PLAYBACK
   const [playbackIndex, setPlaybackIndex] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
+  const [showStats, setShowStats] = useState(false);
 
   // Timer for auto-playing BFS or Playback
   useEffect(() => {
@@ -61,7 +64,7 @@ function App() {
       const timeout = setTimeout(() => {
         setPhase('PLAYBACK');
         setPlaybackIndex(0);
-      }, 2000);
+      }, 100);
       return () => clearTimeout(timeout);
     }
   }, [phase, engineState.found]);
@@ -154,18 +157,19 @@ function App() {
           <button onClick={handleNewMaze} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded shadow-md border border-purple-500">
             🎲 New Maze
           </button>
-          {/* Explain Button - Always visible or only when relevant? User said "after reached goal" mostly, but useful anytime. Let's make it always accessible but highlighted if finished. */}
+
           <button
-            onClick={() => setShowExplanation(true)}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-500 rounded text-gray-200"
-            title="How BFS Works"
+            onClick={() => setShowStats(true)}
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-500 rounded text-gray-200 flex items-center gap-2"
+            title="View Search Statistics"
           >
-            ❓ Explain Logic
+            📊 Run Stats
           </button>
         </div>
       </header>
 
-      <ExplanationModal isOpen={showExplanation} onClose={() => setShowExplanation(false)} />
+      <BFSGuideModal isOpen={showGuide} onClose={() => setShowGuide(false)} />
+      <SearchStatsModal isOpen={showStats} onClose={() => setShowStats(false)} state={engineState} />
 
       {/* Main Layout */}
       <main className="flex flex-col flex-1 gap-4 overflow-hidden min-h-0">
@@ -203,14 +207,14 @@ function App() {
         </div>
       </main>
 
-      {/* Brief Explanation */}
-      <footer className="mt-4 p-4 bg-gray-800 rounded border border-gray-700 text-sm text-gray-400 text-center">
-        <h3 className="text-white font-bold mb-2">Why BFS?</h3>
-        <p>
-          A Maze is essentially an <strong className="text-yellow-400">Unweighted Graph</strong> (every step costs 1).
-          BFS is the optimal algorithm here because it explores equally in all directions (level-by-level).
-          This property <strong>guarantees</strong> that the first time we find the target, it is via the shortest possible path.
-        </p>
+      {/* Footer / Guide Button */}
+      <footer className="mt-2 flex justify-center">
+        <button
+          onClick={() => setShowGuide(true)}
+          className="w-full py-3 bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded border border-gray-600 text-gray-300 font-bold tracking-widest uppercase text-sm shadow-lg transition-all"
+        >
+          📖 Why BFS? (Click to Learn Logic)
+        </button>
       </footer>
     </div>
   )

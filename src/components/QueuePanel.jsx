@@ -16,7 +16,7 @@ const QueuePanel = ({ queue, current }) => {
                 <span className="text-xs text-gray-500">{queue.length} items</span>
             </div>
 
-            <div ref={scrollRef} className="flex-1 flex gap-2 overflow-x-auto items-center scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent px-2">
+            <div ref={scrollRef} className="flex-1 flex gap-2 overflow-x-auto overflow-y-hidden items-center px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
                 {/* Current (Processing) Node - Visualized as just popped */}
                 {current && (
                     <div className="flex-shrink-0 flex flex-col items-center opacity-50 grayscale">

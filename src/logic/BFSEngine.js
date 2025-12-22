@@ -17,10 +17,14 @@ export class BFSEngine {
         this.found = false;
         this.finished = false;
         this.depths = new Map(); // Key: "r,c", Value: depth
+        this.maxDepth = 0;
+        this.maxQueueSize = 0;
+        this.steps = 0;
 
         // Initialize
         if (this.start) {
             this.queue.push(this.start);
+            this.maxQueueSize = 1;
             this.visited[this.start.r][this.start.c] = true;
             this.depths.set(`${this.start.r},${this.start.c}`, 0);
         }
@@ -40,6 +44,8 @@ export class BFSEngine {
             this.finished = true;
             return false; // No more steps
         }
+
+        this.steps++;
 
         // Dequeue
         const current = this.queue.shift();
@@ -63,19 +69,22 @@ export class BFSEngine {
             if (this.isValid(nr, nc) && !this.visited[nr][nc]) {
                 this.visited[nr][nc] = true;
                 this.queue.push({ r: nr, c: nc });
+                this.maxQueueSize = Math.max(this.maxQueueSize, this.queue.length);
 
                 // Track Parent
                 this.parentMap.set(`${nr},${nc}`, current);
 
                 // Track Depth
                 const currentDepth = this.depths.get(`${current.r},${current.c}`);
-                this.depths.set(`${nr},${nc}`, currentDepth + 1);
+                const newDepth = currentDepth + 1;
+                this.depths.set(`${nr},${nc}`, newDepth);
+                this.maxDepth = Math.max(this.maxDepth, newDepth);
 
                 // Track Tree Edge
                 this.treeEdges.push({
                     from: current,
                     to: { r: nr, c: nc },
-                    depth: currentDepth + 1
+                    depth: newDepth
                 });
             }
         }
@@ -114,7 +123,10 @@ export class BFSEngine {
             treeEdges: [...this.treeEdges],
             found: this.found,
             finished: this.finished,
-            shortestPath: this.finished && this.found ? this.getShortestPath() : []
+            shortestPath: this.finished && this.found ? this.getShortestPath() : [],
+            maxQueueSize: this.maxQueueSize,
+            maxDepth: this.maxDepth,
+            steps: this.steps
         };
     }
 }
