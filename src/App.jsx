@@ -188,6 +188,8 @@ function App() {
               path={engineState.finished ? engineState.shortestPath : []}
               parentMap={engineState.parentMap}
               playbackNode={playbackNode}
+              depths={engineState.depths}
+              maxDepth={engineState.maxDepth}
             />
           </div>
         </div>

@@ -126,6 +126,7 @@ export class BFSEngine {
             shortestPath: this.finished && this.found ? this.getShortestPath() : [],
             maxQueueSize: this.maxQueueSize,
             maxDepth: this.maxDepth,
+            depths: this.depths,
             steps: this.steps
         };
     }
