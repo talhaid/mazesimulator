@@ -39,8 +39,8 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
             if (ids.length > maxNodesInLevel) maxNodesInLevel = ids.length;
         });
 
-        const minSpacing = 50; // slightly wider for better look
-        const padding = 50;
+        const minSpacing = 70; // Increased for bigger nodes
+        const padding = 60;
         // Remove the hardcoded 600 min-width to allow true centering of small trees
         const neededWidth = Math.max(200, maxNodesInLevel * minSpacing + padding * 2);
 
@@ -53,7 +53,7 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
             nodeIds.forEach((id, index) => {
                 const node = nodes.get(id);
                 node.x = step * (index + 1);
-                node.y = depth * 80 + 50;
+                node.y = depth * 100 + 60; // Increased vertical spacing
             });
         });
 
@@ -72,7 +72,7 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
         });
 
         const maxDepth = Math.max(...Array.from(levels.keys()));
-        const neededHeight = Math.max(500, (maxDepth + 1) * 80 + 50);
+        const neededHeight = Math.max(500, (maxDepth + 1) * 100 + 60);
 
         return {
             nodes: Array.from(nodes.values()),
@@ -123,15 +123,22 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
     const isPathNode = (node) => path.some(p => p.r === node.r && p.c === node.c);
     const isCurrentNode = (node) => current && current.r === node.r && current.c === node.c;
 
+    // Helper for Node Colors
+    const getNodeStyle = (node) => {
+        if (isCurrentNode(node)) return { face: '#F59E0B', shadow: '#B45309', text: '#FFF' }; // Amber-500 / Amber-700
+        if (isPathNode(node)) return { face: '#FB923C', shadow: '#C2410C', text: '#FFF' };    // Orange-400 / Orange-700
+        return { face: '#E7E5E4', shadow: '#A8A29E', text: '#292524' };                       // Stone-200 / Stone-400
+    };
+
     // If we have no tree, just show placeholder
     if (layout.nodes.length === 0) {
-        return <div className="w-full h-full flex items-center justify-center text-gray-500">Wait for start...</div>;
+        return <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold text-lg">WAITING FOR SEARCH...</div>;
     }
 
     // Dynamic Height based on depth
     // We want it to be scrollable if it gets tall
-    const LEVEL_HEIGHT = 80;
-    const NODE_WIDTH = 60;
+    const LEVEL_HEIGHT = 100;
+    const NODE_WIDTH = 80;
     const canvasHeight = Math.max(800, (layout.maxDepth + 2) * LEVEL_HEIGHT);
     const canvasWidth = Math.max(1200, (layout.maxBreadth + 2) * NODE_WIDTH);
 
@@ -155,7 +162,9 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
                     style={{ minWidth: '100%', minHeight: '100%' }}
                 >
                     <defs>
-                        {/* ... markers ... */}
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="2" dy="2" stdDeviation="2" floodColor="#000000" floodOpacity="0.1" />
+                        </filter>
                     </defs>
                     <g transform={`translate(${canvasWidth / 2 - layout.width / 2}, 40)`}>
                         {/* Links */}
@@ -164,29 +173,41 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
                                 key={link.id}
                                 x1={link.x1} y1={link.y1}
                                 x2={link.x2} y2={link.y2}
-                                stroke="#4B5563"
-                                strokeWidth="1.5"
+                                stroke="#A8A29E"
+                                strokeWidth="3"
+                                strokeLinecap="round"
                             />
                         ))}
 
                         {/* Nodes */}
-                        {layout.nodes.map(node => (
-                            <g key={node.id}>
-                                <circle
-                                    cx={node.x} cy={node.y} r="14"
-                                    fill={isCurrentNode(node) ? '#FBBF24' : (isPathNode(node) ? '#3B82F6' : '#E5E7EB')}
-                                    stroke={isPathNode(node) ? 'white' : '#9CA3AF'}
-                                    strokeWidth={isPathNode(node) ? 2 : 1}
-                                />
-                                <text
-                                    x={node.x} y={node.y}
-                                    dy=".3em" textAnchor="middle"
-                                    fill="black" fontSize="9" fontWeight="bold"
-                                >
-                                    {node.r},{node.c}
-                                </text>
-                            </g>
-                        ))}
+                        {layout.nodes.map(node => {
+                            const style = getNodeStyle(node);
+                            return (
+                                <g key={node.id}>
+                                    {/* 3D Bottom/Shadow Layer */}
+                                    <circle
+                                        cx={node.x} cy={node.y + 4} r="22"
+                                        fill={style.shadow}
+                                    />
+                                    {/* Top Face Layer */}
+                                    <circle
+                                        cx={node.x} cy={node.y} r="22"
+                                        fill={style.face}
+                                    />
+                                    {/* Text */}
+                                    <text
+                                        x={node.x} y={node.y}
+                                        dy=".3em" textAnchor="middle"
+                                        fill={style.text}
+                                        fontSize="12"
+                                        fontWeight="900"
+                                        style={{ fontFamily: 'monospace' }}
+                                    >
+                                        {node.r},{node.c}
+                                    </text>
+                                </g>
+                            );
+                        })}
                     </g>
                 </svg>
             </div>
