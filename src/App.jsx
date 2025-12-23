@@ -130,7 +130,7 @@ function App() {
 
 
         {/* 1. Header / Controls - Aligned with TREE label */}
-        <div className="px-8 pt-14 pb-4 flex flex-col gap-6 z-20">
+        <div className="px-8 pt-14 pb-4 flex flex-col gap-6 z-20 animate-enter" style={{ animationDelay: '100ms' }}>
           <div className="flex flex-wrap gap-3">
             {phase === 'SEARCHING' ? (
               <button onClick={() => setPhase('IDLE')} className="px-6 py-2 bg-stone-200 text-stone-800 hover:bg-stone-200 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-orange-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
@@ -187,11 +187,11 @@ function App() {
 
           <div className="flex items-center gap-5">
             {/* Title */}
-            <h1 className="font-black text-5xl tracking-tight text-stone-800 select-none [writing-mode:vertical-rl] rotate-180 drop-shadow-[3px_3px_0px_rgba(255,255,255,0.4)]">
+            <h1 className="font-black text-5xl tracking-tight text-stone-800 select-none [writing-mode:vertical-rl] rotate-180 drop-shadow-[3px_3px_0px_rgba(255,255,255,0.4)] animate-enter" style={{ animationDelay: '200ms' }}>
               BFS SIMULATOR
             </h1>
 
-            <div className="relative p-1">
+            <div className="relative p-1 animate-enter" style={{ animationDelay: '300ms' }}>
               {/* Subtle Glow behind maze - Warm glow */}
               <div className="absolute inset-0 bg-orange-300/20 blur-3xl rounded-full"></div>
               <MazePanel
@@ -210,7 +210,7 @@ function App() {
 
 
         {/* 3. Bottom: Queue - Seamless */}
-        <div className="px-8 pb-8 pt-4 flex flex-col gap-4 h-48 shrink-0">
+        <div className="px-8 pb-8 pt-4 flex flex-col gap-4 h-48 shrink-0 animate-enter" style={{ animationDelay: '400ms' }}>
           {/* Queue Panel - Minimal */}
           <div className="flex-1 flex flex-col">
             <div className="flex-1 relative overflow-hidden">
@@ -230,12 +230,12 @@ function App() {
         </div >
 
         {/* Tree Header / Controls */}
-        < div className="absolute top-8 left-8 z-10 pointer-events-none" >
+        < div className="absolute top-8 left-8 z-10 pointer-events-none animate-enter" style={{ animationDelay: '500ms' }} >
           <h2 className="text-[#ff800f] text-6xl font-black tracking-tight select-none drop-shadow-[2px_2px_0px_rgba(87,83,78,1)]">TREE</h2>
         </div >
 
         {/* Minimal Zoom Controls - Light Mode */}
-        < div className="absolute bottom-8 right-8 z-20 flex gap-2" >
+        < div className="absolute bottom-8 right-8 z-20 flex gap-2 animate-enter" style={{ animationDelay: '600ms' }} >
           <button onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} className="w-10 h-10 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl flex items-center justify-center font-black transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm" title="Zoom Out">
             -
           </button>
@@ -248,7 +248,7 @@ function App() {
         </div >
 
         {/* Tree Container */}
-        < div className="flex-1 overflow-auto relative z-0 no-scrollbar" >
+        < div className="flex-1 overflow-auto relative z-0 no-scrollbar animate-enter" style={{ animationDelay: '700ms' }} >
           <div
             className="min-w-full min-h-full origin-top-left transition-transform duration-200 ease-out"
             style={{
