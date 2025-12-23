@@ -159,14 +159,20 @@ function App() {
             <button onClick={handleReset} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1">
               Reset
             </button>
-            <button onClick={handleNewMaze} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1" title="New Maze">
-              🎲
+            <button onClick={handleNewMaze} className="px-3 py-2 bg-stone-200 hover:bg-stone-200 text-stone-700 hover:text-stone-900 rounded-xl transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 flex items-center justify-center" title="New Maze">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+              </svg>
             </button>
-            <button onClick={() => setShowStats(true)} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1" title="View Stats">
-              📊
+            <button onClick={() => setShowStats(true)} className="px-3 py-2 bg-stone-200 hover:bg-stone-200 text-stone-700 hover:text-stone-900 rounded-xl transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 flex items-center justify-center" title="View Stats">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+              </svg>
             </button>
-            <button onClick={() => setShowGuide(true)} className="px-4 py-2 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl uppercase font-black tracking-wider text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1" title="Why BFS?">
-              ❓
+            <button onClick={() => setShowGuide(true)} className="px-3 py-2 bg-stone-200 hover:bg-stone-200 text-stone-700 hover:text-stone-900 rounded-xl transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 flex items-center justify-center" title="Why BFS?">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+              </svg>
             </button>
           </div>
 
@@ -180,7 +186,7 @@ function App() {
         {/* 2. Maze Centerpiece */}
         <div className="flex-1 px-8 flex flex-col justify-center relative gap-8">
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-5">
             {/* Title */}
             <h1 className="font-black text-5xl tracking-tight text-stone-800 select-none [writing-mode:vertical-rl] rotate-180 drop-shadow-[3px_3px_0px_rgba(255,255,255,0.4)]">
               BFS SIMULATOR
@@ -231,11 +237,15 @@ function App() {
 
         {/* Minimal Zoom Controls - Light Mode */}
         < div className="absolute bottom-8 right-8 z-20 flex gap-2" >
-          <div className="flex bg-white shadow-[4px_4px_0px_0px_rgba(214,211,209,0.5)] rounded-full p-1 border-2 border-stone-100">
-            <button onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 rounded-full transition-colors font-bold">-</button>
-            <button onClick={() => setZoom(1)} className="px-2 text-xs font-black text-stone-300 hover:text-stone-800 transition-colors">{Math.round(zoom * 100)}%</button>
-            <button onClick={() => setZoom(z => Math.min(3, z + 0.1))} className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 rounded-full transition-colors font-bold">+</button>
-          </div>
+          <button onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} className="w-10 h-10 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl flex items-center justify-center font-black transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm" title="Zoom Out">
+            -
+          </button>
+          <button onClick={() => setZoom(1)} className="px-3 h-10 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl flex items-center justify-center font-black text-xs transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm" title="Reset Zoom">
+            {Math.round(zoom * 100)}%
+          </button>
+          <button onClick={() => setZoom(z => Math.min(3, z + 0.1))} className="w-10 h-10 bg-stone-200 hover:bg-stone-200 text-stone-800 rounded-xl flex items-center justify-center font-black transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm" title="Zoom In">
+            +
+          </button>
         </div >
 
         {/* Tree Container */}
