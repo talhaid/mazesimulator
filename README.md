@@ -2,8 +2,7 @@
 
 A beautiful, interactive visualization of the **Breadth-First Search (BFS)** algorithm in a 2D maze grid. Watch as the algorithm explores the "waves" of the graph and builds the shortest-path tree in real-time.
 
-![BFS Simulator Demo](https://via.placeholder.com/800x400?text=BFS+Simulator+Demo)
-*(Replace with actual screenshot)*
+("C:\Users\tisma\OneDrive\Masaüstü\mazesimulator.png")
 
 ## ✨ Features
 
