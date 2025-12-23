@@ -2,9 +2,9 @@
 
 A beautiful, interactive visualization of the **Breadth-First Search (BFS)** algorithm in a 2D maze grid. Watch as the algorithm explores the "waves" of the graph and builds the shortest-path tree in real-time.
 
-("C:\Users\tisma\OneDrive\Masaüstü\mazesimulator.png")
 
-## ✨ Features
+## ✨ Features<img width="1919" height="909" alt="mazesimulator" src="https://github.com/user-attachments/assets/de14272b-8c5d-46d4-a3e6-966903c60937" />
+
 
 -   **Interactive Maze**: Generates random solvable mazes using a robust random-walk algorithm.
 -   **BFS Visualization**:
