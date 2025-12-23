@@ -133,16 +133,20 @@ function App() {
         {/* 1. Header / Controls - Aligned with TREE label */}
         <div className="px-8 pt-14 pb-4 flex flex-col gap-6 z-20">
           <div className="flex flex-wrap gap-3">
-            {phase === 'IDLE' && (
-              <button onClick={handleStart} className="px-6 py-2 bg-stone-200 text-stone-800 hover:bg-stone-200 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
-                Start
-              </button>
-            )}
-            {phase === 'SEARCHING' && (
+            {phase === 'SEARCHING' ? (
               <button onClick={() => setPhase('IDLE')} className="px-6 py-2 bg-stone-200 text-stone-800 hover:bg-stone-200 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-orange-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
                 Pause
               </button>
+            ) : (
+              <button
+                onClick={handleStart}
+                disabled={phase === 'FINISHED' || phase === 'PLAYBACK'}
+                className="px-6 py-2 bg-stone-200 text-stone-800 hover:bg-stone-200 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-stone-400 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:active:translate-x-0 disabled:active:translate-y-0 disabled:border-b-4 disabled:border-r-4"
+              >
+                Start
+              </button>
             )}
+            {/* Removed redundant SEARCHING block */}
             {phase === 'FINISHED' && engineState.found && (
               <button onClick={handleStart} className="px-6 py-2 bg-orange-400 text-white hover:bg-orange-500 rounded-xl uppercase font-black tracking-wider text-sm transition-all border-b-4 border-r-4 border-orange-600 active:border-b-0 active:border-r-0 active:translate-y-1 active:translate-x-1 shadow-sm">
                 Replay
@@ -174,23 +178,28 @@ function App() {
         </div>
 
         {/* 2. Maze Centerpiece */}
-        <div className="flex-1 px-8 flex flex-col items-center justify-center relative gap-8">
+        <div className="flex-1 px-8 flex flex-col justify-center relative gap-8">
 
+          <div className="flex items-center gap-8">
+            {/* Title */}
+            <h1 className="font-black text-5xl tracking-tight text-stone-800 select-none [writing-mode:vertical-rl] rotate-180 drop-shadow-[3px_3px_0px_rgba(255,255,255,0.4)]">
+              BFS SIMULATOR
+            </h1>
 
-
-          <div className="relative p-1">
-            {/* Subtle Glow behind maze - Warm glow */}
-            <div className="absolute inset-0 bg-orange-300/20 blur-3xl rounded-full"></div>
-            <MazePanel
-              grid={engineState.grid}
-              visited={engineState.visited}
-              current={engineState.current}
-              path={engineState.finished ? engineState.shortestPath : []}
-              parentMap={engineState.parentMap}
-              playbackNode={playbackNode}
-              depths={engineState.depths}
-              maxDepth={engineState.maxDepth}
-            />
+            <div className="relative p-1">
+              {/* Subtle Glow behind maze - Warm glow */}
+              <div className="absolute inset-0 bg-orange-300/20 blur-3xl rounded-full"></div>
+              <MazePanel
+                grid={engineState.grid}
+                visited={engineState.visited}
+                current={engineState.current}
+                path={engineState.finished ? engineState.shortestPath : []}
+                parentMap={engineState.parentMap}
+                playbackNode={playbackNode}
+                depths={engineState.depths}
+                maxDepth={engineState.maxDepth}
+              />
+            </div>
           </div>
         </div>
 
