@@ -124,7 +124,7 @@ function App() {
   const [zoom, setZoom] = useState(1);
 
   return (
-    <div className="flex h-screen bg-orange-50 text-stone-700 font-sans overflow-hidden selection:bg-orange-200">
+    <div className="flex h-screen bg-sand-texture text-stone-700 font-sans overflow-hidden selection:bg-orange-200">
 
       {/* Left Sidebar: Minimalist & Unified */}
       <aside className="w-[40%] flex flex-col z-10 relative">
@@ -208,12 +208,7 @@ function App() {
       </aside >
 
       {/* Right Main Interface: BFS Tree - Boundless */}
-      < main className="flex-1 relative flex flex-col overflow-hidden bg-orange-50" >
-        {/* Subtle grid pattern for the tree background - Dots */}
-        < div className="absolute inset-0 opacity-[0.05]"
-          style={{ backgroundImage: 'radial-gradient(circle, #78716c 1px, transparent 1px)', backgroundSize: '40px 40px' }
-          }>
-        </div >
+      <main className="flex-1 relative flex flex-col overflow-hidden">
 
         {/* Tree Header / Controls */}
         < div className="absolute top-8 left-8 z-10 pointer-events-none" >
