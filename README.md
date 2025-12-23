@@ -1,16 +1,72 @@
-# React + Vite
+# BFS Simulator 🌲🔍
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful, interactive visualization of the **Breadth-First Search (BFS)** algorithm in a 2D maze grid. Watch as the algorithm explores the "waves" of the graph and builds the shortest-path tree in real-time.
 
-Currently, two official plugins are available:
+![BFS Simulator Demo](https://via.placeholder.com/800x400?text=BFS+Simulator+Demo)
+*(Replace with actual screenshot)*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+-   **Interactive Maze**: Generates random solvable mazes using a robust random-walk algorithm.
+-   **BFS Visualization**:
+    -   **Grid View**: See the algorithm "scan" neighbors (Up, Right, Down, Left).
+    -   **Tree View**: Watch the **recursion tree** grow dynamically as nodes are discovered.
+    -   **Queue View**: Real-time FIFO queue visualization.
+-   **Step-by-Step Control**: Pause, Step, and Playback the search at your own pace.
+-   **Educational Guide**: Built-in interactive guide explaining *Nodes*, *Edges*, *Waves*, and *Pathfinding*.
+-   **Deep Stats**: Live metrics on exploring time, max depth, and tree breadth.
+-   **Beautiful UI**: "Cozy Game" aesthetic with smooth animations, SVG icons, and a unified stone/amber color palette.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+-   **React** (Vite) - Component-based UI.
+-   **Tailwind CSS** - Modern, utility-first styling.
+-   **Algorithms**: Custom pure-JS implementation of BFS and Maze Generation logic.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+### Prerequisites
+
+-   Node.js (v14+)
+-   npm or yarn
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/bfs-simulator.git
+    cd bfs-simulator
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Run the development server:
+    ```bash
+    npm run dev
+    ```
+
+4.  Open `http://localhost:5173` in your browser.
+
+## 📦 Building for Production
+
+To create a production build (static files):
+
+```bash
+npm run build
+```
+
+The output will be in the `dist` folder, ready to be deployed to GitHub Pages, Vercel, or Netlify.
+
+## 🎨 Design
+
+The project uses a "Warm Stone" aesthetic:
+-   **Colors**: Stone-50 to Stone-900 (Grays), Amber-500 (Start/Highlights), Rose-800 (Target).
+-   **Typography**: Bold, rounded sans-serif fonts.
+-   **Visuals**: Custom SVG icons and heavily styled UI components for a polished feel.
+
+## 📄 License
+
+MIT License. Feel free to explore and learn!

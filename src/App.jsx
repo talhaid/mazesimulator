@@ -3,7 +3,6 @@ import { BFSEngine } from './logic/BFSEngine';
 import { generateRandomMaze } from './logic/MazeGenerator';
 import MazePanel from './components/MazePanel';
 import TreePanel from './components/TreePanel';
-// import ExplanationModal from './components/ExplanationModal'; // Deprecated
 import BFSGuideModal from './components/BFSGuideModal';
 import SearchStatsModal from './components/SearchStatsModal';
 import QueuePanel from './components/QueuePanel';
