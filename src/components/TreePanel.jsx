@@ -123,11 +123,53 @@ const TreePanel = ({ treeEdges, current, path, startNode, finished }) => {
     const isPathNode = (node) => path.some(p => p.r === node.r && p.c === node.c);
     const isCurrentNode = (node) => current && current.r === node.r && current.c === node.c;
 
+    // Color Helpers
+    const interpolateColor = (color1, color2, factor) => {
+        const result = color1.slice();
+        for (let i = 0; i < 3; i++) {
+            result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+        }
+        return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
+    };
+
+    // Simple darker shade for 3D shadow effect
+    const getShadowColor = (rgbString) => {
+        // Parse rgb(r, g, b)
+        const match = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (!match) return '#78350F'; // Fallback
+        const r = Math.max(0, Math.floor(parseInt(match[1]) * 0.7));
+        const g = Math.max(0, Math.floor(parseInt(match[2]) * 0.7));
+        const b = Math.max(0, Math.floor(parseInt(match[3]) * 0.7));
+        return `rgb(${r}, ${g}, ${b})`;
+    };
+
     // Helper for Node Colors
     const getNodeStyle = (node) => {
-        if (isCurrentNode(node)) return { face: '#F59E0B', shadow: '#B45309', text: '#FFF' }; // Amber-500 / Amber-700
-        if (isPathNode(node)) return { face: '#FB923C', shadow: '#C2410C', text: '#FFF' };    // Orange-400 / Orange-700
-        return { face: '#E7E5E4', shadow: '#A8A29E', text: '#292524' };                       // Stone-200 / Stone-400
+        // 1. Current Node (Highlight)
+        if (isCurrentNode(node)) return { face: '#F59E0B', shadow: '#B45309', text: '#FFF' }; // Amber-500
+
+        // 2. Path Nodes (Solution) - Keep distinct or blend? 
+        // User asked for "level by level color gradient", usually implied for the 'visited' set.
+        // Let's keep path distinct as it is the 'answer'.
+        if (isPathNode(node)) return { face: '#FB923C', shadow: '#C2410C', text: '#FFF' }; // Orange-400
+
+        // 3. Standard Visited Nodes - Apply Gradient
+        // Amber-100 (254, 243, 199) to Amber-900 (120, 53, 15)
+        const startColor = [254, 243, 199];
+        const endColor = [120, 53, 15];
+
+        const safeMax = layout.maxDepth || 1;
+        const ratio = Math.min(1, Math.max(0, node.depth / safeMax));
+
+        const faceColor = interpolateColor(startColor, endColor, ratio);
+        const shadowColor = getShadowColor(faceColor);
+
+        // Text color needs to flip based on brightness.
+        // Amber-100 is light (dark text), Amber-900 is dark (light text).
+        // Ratio > 0.5 means darker.
+        const textColor = ratio > 0.5 ? '#FFF' : '#451a03';
+
+        return { face: faceColor, shadow: shadowColor, text: textColor };
     };
 
     // If we have no tree, just show placeholder
