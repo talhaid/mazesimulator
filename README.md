@@ -65,7 +65,3 @@ The project uses a "Warm Stone" aesthetic:
 -   **Colors**: Stone-50 to Stone-900 (Grays), Amber-500 (Start/Highlights), Rose-800 (Target).
 -   **Typography**: Bold, rounded sans-serif fonts.
 -   **Visuals**: Custom SVG icons and heavily styled UI components for a polished feel.
-
-## 📄 License
-
-MIT License. Feel free to explore and learn!
